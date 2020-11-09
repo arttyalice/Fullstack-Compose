@@ -1,0 +1,10 @@
+export APP_SERVE_PORT="8888"
+
+# postgres config
+export APP_PQ_HOST="127.0.0.1"
+export APP_PQ_PORT="5432"
+export APP_PQ_USER="postgres"
+export APP_PQ_PASSWORD="A13a6do21lizxvyJ"
+export APP_PQ_DB="deeploy-exam"
+
+go run main.go $*

@@ -1,0 +1,36 @@
+version: "3.8"
+   
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=deeploy-exam
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres1234
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  api:
+    build:
+      context: ./web-service
+      dockerfile: Dockerfile
+    environment:
+      - APP_SERVE_PORT=8888
+      - APP_PQ_HOST=db
+      - APP_PQ_PORT=5432
+      - APP_PQ_USER=postgres
+      - APP_PQ_PASSWORD=postgres1234
+      - APP_PQ_DB=deeploy-exam
+    ports:
+      - "8888:8888"
+    depends_on:
+      db:
+        condition: service_healthy
+  web:
+    build:
+      context: ./web-client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
